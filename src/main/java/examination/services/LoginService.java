@@ -36,7 +36,7 @@ public class LoginService {
         }
         try {
             String hashedPassword = hashPassword(password);
-            userRepository.createUser(new User(null,name,surName,userName,hashedPassword));
+            userRepository.createUser(new User(null,name,surName,userName,hashedPassword,false));
             return userRepository.getUser(userName,hashedPassword);
         } catch (NoSuchAlgorithmException e) {
             System.out.println(e);

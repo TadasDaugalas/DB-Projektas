@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Data
 @AllArgsConstructor
@@ -20,4 +21,6 @@ public class User {
     private String username;
     @Column(name = "pasword")
     private String password;
+    @Column(name = "is_admin",nullable = true)
+    private boolean isAdmin;
 }
