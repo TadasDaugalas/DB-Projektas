@@ -4,11 +4,21 @@ public class Student {
     private String Name;
     private String SurName;
     private int Id;
+    private String password;
 
-    public Student(String name, String surName, int id) {
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Student(String name, String surName, int id, String password) {
         Name = name;
         SurName = surName;
         Id = id;
+        this.password = password;
     }
 
     public String getName() {
