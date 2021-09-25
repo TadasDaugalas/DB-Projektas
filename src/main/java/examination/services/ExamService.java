@@ -6,7 +6,7 @@ import examination.repository.ExamRepository;
 import java.util.List;
 
 public class ExamService {
-    ExamRepository examRepository;
+    private ExamRepository examRepository;
     public ExamService(){
         examRepository=new ExamRepository();
     }

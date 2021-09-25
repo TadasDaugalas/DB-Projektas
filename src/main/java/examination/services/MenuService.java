@@ -13,12 +13,14 @@ public class MenuService {
     private MenuState menuState = MenuState.ANONYMOUS;
     private User user = null;
     private Optional<Long> examId = Optional.empty();
-    private LoginService loginService;
-    private ExamService examService;
+    private final LoginService loginService;
+    private final QuestionService questionService;
+    private final ExamService examService;
 
     public MenuService() {
         loginService = new LoginService();
-        examService= new ExamService();
+        examService = new ExamService();
+        questionService= new QuestionService();
     }
 
     Scanner sc = new Scanner(System.in);
@@ -37,12 +39,8 @@ public class MenuService {
                         stop = true;
                     }
                     switch (command) {
-                        case 1:
-                            menuState = MenuState.LOGIN;
-                            break;
-                        case 2:
-                            menuState = MenuState.REGISTER;
-                            break;
+                        case 1 -> menuState = MenuState.LOGIN;
+                        case 2 -> menuState = MenuState.REGISTER;
                     }
                 }
 
@@ -76,17 +74,17 @@ public class MenuService {
                     }
                 }
                 case EXAM_MENU -> {
-                  if(user.isAdmin()){
-                      adminExamMenu();
-                  }else {
-                      System.out.println("Student in progress");
-                      menuState=MenuState.ANONYMOUS;
-                  }
+                    if (user.isAdmin()) {
+                        adminExamMenu();
+                    } else {
+                        System.out.println("Student in progress");
+                        menuState = MenuState.ANONYMOUS;
+                    }
                 }
                 case ADD_EXAM -> {
                     System.out.println("Enter name");
                     examService.createExam(sc.nextLine());
-                    menuState=MenuState.EXAM_MENU;
+                    menuState = MenuState.EXAM_MENU;
                 }
                 case EDIT_EXAM -> {
                     List<Exam> list = examService.getList();
@@ -111,31 +109,76 @@ public class MenuService {
                 }
                 case EDIT_EXAM_ITEM -> {
                     System.out.println("Edit exam: " + this.examId.get());
-                    menuState = MenuState.EXAM_MENU;
+                    questionMenu();
+                }
+                case ADD_QUESTION -> {
+                    System.out.println("Enter question text");
+                    String questionText = sc.nextLine();
+                    System.out.println("Enter first answer");
+                    String answer1= sc.nextLine();
+                    System.out.println("Enter second answer");
+                    String answer2= sc.nextLine();
+                    System.out.println("Enter third answer");
+                    String answer3= sc.nextLine();
+                    System.out.println("Enter correct answer");
+                    int correctAnsw=Integer.parseInt(sc.nextLine());
+
+                    questionService.createQuestion(examId.get(),questionText,answer1,answer2,answer3,correctAnsw);
+
+                    menuState=MenuState.EXAM_MENU;
+                }
+                case UPDATE_QUESTION -> {
+                    System.out.println("Enter Question ID");
+                    Long id=Long.parseLong(sc.nextLine());
+                    System.out.println("Enter question text");
+                    String questionText = sc.nextLine();
+                    System.out.println("Enter first answer");
+                    String answer1= sc.nextLine();
+                    System.out.println("Enter second answer");
+                    String answer2= sc.nextLine();
+                    System.out.println("Enter third answer");
+                    String answer3= sc.nextLine();
+                    System.out.println("Enter correct answer");
+                    int correctAnsw=Integer.parseInt(sc.nextLine());
+                    questionService.updateQuestion(id,questionText,answer1,answer2,answer3,correctAnsw);
+                    menuState=MenuState.EXAM_MENU;
                 }
 
             }
         }
     }
-    private void adminExamMenu(){
+    private void questionMenu(){
+        System.out.println("1-Add question");
+        System.out.println("2-Edit question");
+        System.out.println("0-Back");
+        int command = enterCommand(2);
+        if (command == 0) {
+            user = null;
+            menuState = MenuState.ANONYMOUS;
+            return;
+        }
+        switch (command) {
+            case 1 -> menuState = MenuState.ADD_QUESTION;
+            case 2 -> menuState = MenuState.UPDATE_QUESTION;
+        }
+    }
+
+    private void adminExamMenu() {
         System.out.println("1-Add exam");
         System.out.println("2-Edit exam");
         System.out.println("0-Log out");
         int command = enterCommand(2);
         if (command == 0) {
-            user=null;
-            menuState=MenuState.ANONYMOUS;
+            user = null;
+            menuState = MenuState.ANONYMOUS;
             return;
         }
         switch (command) {
-            case 1:
-                menuState = MenuState.ADD_EXAM;
-                break;
-            case 2:
-                menuState = MenuState.EDIT_EXAM;
-                break;
+            case 1 -> menuState = MenuState.ADD_EXAM;
+            case 2 -> menuState = MenuState.EDIT_EXAM;
         }
     }
+
     private int enterCommand(int max) {
         boolean repeat = true;
         int number = 0;
@@ -163,7 +206,9 @@ public class MenuService {
         EXAM_MENU,
         ADD_EXAM,
         EDIT_EXAM,
-        EDIT_EXAM_ITEM
+        EDIT_EXAM_ITEM,
+        ADD_QUESTION,
+        UPDATE_QUESTION
     }
 }
 

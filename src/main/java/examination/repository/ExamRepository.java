@@ -12,5 +12,8 @@ public class ExamRepository extends BaseRepository {
     public List<Exam> getExams() {
         return getEntity(session -> session.createQuery("From Exam", Exam.class).list());
     }
+    public Exam getExam(Long id){
+return getEntity(session -> session.get(Exam.class,id));
+    }
 
 }
