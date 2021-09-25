@@ -1,6 +1,7 @@
 package examination.provider;
 
 import examination.entity.Exam;
+import examination.entity.Examination;
 import examination.entity.Question;
 import examination.entity.User;
 import org.hibernate.SessionFactory;
@@ -24,6 +25,7 @@ public class SessionFactoryProvider {
                 configuration.addAnnotatedClass(User.class);
                 configuration.addAnnotatedClass(Exam.class);
                 configuration.addAnnotatedClass(Question.class);
+                configuration.addAnnotatedClass(Examination.class);
 
                 StandardServiceRegistry registry = new StandardServiceRegistryBuilder().applySettings(properties).build();
                 sessionFactory = configuration.buildSessionFactory(registry);

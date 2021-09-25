@@ -4,7 +4,7 @@ import examination.entity.Exam;
 import examination.entity.Question;
 import examination.repository.ExamRepository;
 import examination.repository.QuestionRepository;
-import org.hibernate.query.Query;
+
 
 import java.util.Scanner;
 

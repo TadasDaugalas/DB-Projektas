@@ -16,11 +16,13 @@ public class MenuService {
     private final LoginService loginService;
     private final QuestionService questionService;
     private final ExamService examService;
+    private final ExaminationService examinationService;
 
     public MenuService() {
         loginService = new LoginService();
         examService = new ExamService();
-        questionService= new QuestionService();
+        questionService = new QuestionService();
+        examinationService= new ExaminationService();
     }
 
     Scanner sc = new Scanner(System.in);
@@ -78,7 +80,7 @@ public class MenuService {
                         adminExamMenu();
                     } else {
                         System.out.println("Student in progress");
-                        menuState = MenuState.ANONYMOUS;
+                        menuState = MenuState.CHOSE_EXAM;
                     }
                 }
                 case ADD_EXAM -> {
@@ -115,39 +117,63 @@ public class MenuService {
                     System.out.println("Enter question text");
                     String questionText = sc.nextLine();
                     System.out.println("Enter first answer");
-                    String answer1= sc.nextLine();
+                    String answer1 = sc.nextLine();
                     System.out.println("Enter second answer");
-                    String answer2= sc.nextLine();
+                    String answer2 = sc.nextLine();
                     System.out.println("Enter third answer");
-                    String answer3= sc.nextLine();
+                    String answer3 = sc.nextLine();
                     System.out.println("Enter correct answer");
-                    int correctAnsw=Integer.parseInt(sc.nextLine());
+                    int correctAnsw = Integer.parseInt(sc.nextLine());
 
-                    questionService.createQuestion(examId.get(),questionText,answer1,answer2,answer3,correctAnsw);
+                    questionService.createQuestion(examId.get(), questionText, answer1, answer2, answer3, correctAnsw);
 
-                    menuState=MenuState.EXAM_MENU;
+                    menuState = MenuState.EXAM_MENU;
                 }
                 case UPDATE_QUESTION -> {
                     System.out.println("Enter Question ID");
-                    Long id=Long.parseLong(sc.nextLine());
+                    Long id = Long.parseLong(sc.nextLine());
                     System.out.println("Enter question text");
                     String questionText = sc.nextLine();
                     System.out.println("Enter first answer");
-                    String answer1= sc.nextLine();
+                    String answer1 = sc.nextLine();
                     System.out.println("Enter second answer");
-                    String answer2= sc.nextLine();
+                    String answer2 = sc.nextLine();
                     System.out.println("Enter third answer");
-                    String answer3= sc.nextLine();
+                    String answer3 = sc.nextLine();
                     System.out.println("Enter correct answer");
-                    int correctAnsw=Integer.parseInt(sc.nextLine());
-                    questionService.updateQuestion(id,questionText,answer1,answer2,answer3,correctAnsw);
-                    menuState=MenuState.EXAM_MENU;
+                    int correctAnsw = Integer.parseInt(sc.nextLine());
+                    questionService.updateQuestion(id, questionText, answer1, answer2, answer3, correctAnsw);
+                    menuState = MenuState.EXAM_MENU;
                 }
+                case CHOSE_EXAM-> {
+                    List<Exam> list = examService.getList();
+                    if (list.size() == 0) {
+                        System.out.println("Exam list is empty");
+                        menuState = MenuState.ANONYMOUS;
+                    } else {
+                        list.forEach(e -> {
+                            System.out.println(e.getId() + "\t" + e.getName());
+                        });
 
+                        Long examId = Long.parseLong(sc.nextLine());
+                        List<Long> examIds = list.stream().map(exam -> exam.getId()).collect(Collectors.toList());
+                        if (examIds.contains(examId)) {
+                            this.examId = Optional.of(examId);
+                            menuState = MenuState.START_EXAM;
+                        } else {
+                            System.out.println("Invalid exam id");
+                        }
+                    }
+                }
+                case START_EXAM -> {
+                    examinationService.exam(examId.get());
+                    menuState=MenuState.ANONYMOUS;
+                }
             }
         }
     }
-    private void questionMenu(){
+
+    private void questionMenu() {
         System.out.println("1-Add question");
         System.out.println("2-Edit question");
         System.out.println("0-Back");
@@ -208,7 +234,9 @@ public class MenuService {
         EDIT_EXAM,
         EDIT_EXAM_ITEM,
         ADD_QUESTION,
-        UPDATE_QUESTION
+        UPDATE_QUESTION,
+        CHOSE_EXAM,
+        START_EXAM
     }
 }
 
