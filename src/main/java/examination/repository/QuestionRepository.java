@@ -27,4 +27,13 @@ public class QuestionRepository extends BaseRepository {
 
     });
     }
+    public void updateQuestionCount(int correctAnswerCount,Long id){
+        updateEntity(session -> {
+            Query query = session.createQuery("update Question set correctAnswerCount=:correctAnswerCount where id=:id");
+            query.setParameter("correctAnswerCount",correctAnswerCount);
+            query.setParameter("id",id);
+            query.executeUpdate();
+
+        });
+    }
 }

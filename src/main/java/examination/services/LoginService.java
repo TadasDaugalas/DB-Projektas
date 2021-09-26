@@ -39,7 +39,7 @@ public class LoginService {
             userRepository.createUser(new User(null,name,surName,userName,hashedPassword,false));
             return userRepository.getUser(userName,hashedPassword);
         } catch (NoSuchAlgorithmException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
             return null;
         }
 
@@ -48,7 +48,7 @@ public class LoginService {
         try {
            return userRepository.getUser(userName,hashPassword(password));
         } catch (NoSuchAlgorithmException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
             return null;
         }
 

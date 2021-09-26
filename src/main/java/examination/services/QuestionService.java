@@ -17,7 +17,7 @@ public class QuestionService {
         this.questionRepository = new QuestionRepository();
         this.examRepository = new ExamRepository();
     }
-    public boolean createQuestion(Long examId,String text,String answ1,String answ2,String answ3,int correctAnsw){
+    public void createQuestion(Long examId, String text, String answ1, String answ2, String answ3, int correctAnsw){
         if(questionValidation(text,answ1,answ2,answ3,correctAnsw)) {
             Exam exam = examRepository.getExam(examId);
             Question question = new Question(text, answ1, answ2, answ3, correctAnsw, 0);
@@ -27,14 +27,12 @@ public class QuestionService {
 
             questionRepository.createQuestion(question);
         }
-        return true;
     }
-    public boolean updateQuestion(Long questionId,String text,String answ1,String answ2,String answ3,int correctAnsw){
+    public void updateQuestion(Long questionId, String text, String answ1, String answ2, String answ3, int correctAnsw){
 
         if(questionValidation(text,answ1,answ2,answ3,correctAnsw)){
         questionRepository.updateQuestion(questionId,text,answ1,answ2,answ3,correctAnsw);
         }
-        return true;
     }
     private boolean questionValidation(String text,String answ1,String answ2,String answ3,int correctAnsw){
         if(text.trim().equals("")){

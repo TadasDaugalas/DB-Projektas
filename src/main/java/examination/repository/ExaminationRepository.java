@@ -1,12 +1,9 @@
 package examination.repository;
 
-import examination.entity.Exam;
 import examination.entity.Examination;
 import examination.entity.Question;
-import examination.entity.User;
 import org.hibernate.query.Query;
 
-import java.sql.Date;
 import java.util.List;
 
 
@@ -39,7 +36,9 @@ public class ExaminationRepository extends BaseRepository {
             query.executeUpdate();
         });
     }
+
     public List<Examination> examinationList() {
         return getEntity(session -> session.createQuery("From Examination", Examination.class).list());
     }
+
 }
