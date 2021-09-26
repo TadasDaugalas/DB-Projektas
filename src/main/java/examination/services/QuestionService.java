@@ -6,6 +6,7 @@ import examination.repository.ExamRepository;
 import examination.repository.QuestionRepository;
 
 
+import java.util.List;
 import java.util.Scanner;
 
 public class QuestionService {
@@ -32,6 +33,12 @@ public class QuestionService {
 
         if(questionValidation(text,answ1,answ2,answ3,correctAnsw)){
         questionRepository.updateQuestion(questionId,text,answ1,answ2,answ3,correctAnsw);
+        }
+    }
+    public void printQuestionsList(Long id){
+        List<Question> questionList=questionRepository.getQuestionsList(id);
+        for (Question question:questionList){
+            System.out.println(question.getId() + " " +question.getQuestionText());
         }
     }
     private boolean questionValidation(String text,String answ1,String answ2,String answ3,int correctAnsw){

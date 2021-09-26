@@ -1,7 +1,8 @@
 package examination.repository;
-
 import examination.entity.Question;
 import org.hibernate.query.Query;
+
+import java.util.List;
 
 
 public class QuestionRepository extends BaseRepository {
@@ -9,8 +10,13 @@ public class QuestionRepository extends BaseRepository {
         updateEntity(session -> session.save(question));
     }
 
-    public Question getQuestion(Long id) {
-        return getEntity(session -> session.get(Question.class, id));
+    public List<Question> getQuestionsList(Long examid) {
+        List<Question> questions=getEntity(session -> {
+          Query query=  session.createQuery("From Question where examid=:examid", Question.class);
+          query.setParameter("examid",examid);
+          return query.list();
+        });
+        return questions;
     }
     public void updateQuestion(Long id,String questiontext,String answer1,String answer2,String answer3,int correctAnswer){
     updateEntity(session -> {

@@ -130,6 +130,7 @@ public class MenuService {
                     menuState = MenuState.EXAM_MENU;
                 }
                 case UPDATE_QUESTION -> {
+                    questionService.printQuestionsList(examId.get());
                     System.out.println("Enter Question ID");
                     Long id = Long.parseLong(sc.nextLine());
                     System.out.println("Enter question text");

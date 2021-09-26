@@ -31,6 +31,7 @@ public class ExaminationService {
         List<Question> questionList = examinationRepository.questions(exam.getId());
         int totalQuestion = 0;
         int correctAnswer = 0;
+        int correctAnswerToExam = exam.getCorrectAnswersCount();
         if (questionList.size() > 0) {
             for (Question question : questionList) {
                 totalQuestion++;
@@ -38,6 +39,7 @@ public class ExaminationService {
                 System.out.println("1 answer- " + question.getAnswer1() + " 2 answer -" + question.getAnswer2() + " 3 answer -" + question.getAnswer3());
                 int studentAnswer = Integer.parseInt(sc.nextLine());
                 if (studentAnswer == question.getCorrectAnswer()) {
+                    correctAnswerToExam++;
                     correctAnswer++;
                     questionRepository.updateQuestionCount(question.getCorrectAnswerCount() + 1, question.getId());
                 }
@@ -46,7 +48,7 @@ public class ExaminationService {
             System.out.println("There is no questions in exam");
         }
         examinationRepository.updateExamination(totalQuestion, correctAnswer, (double) correctAnswer / totalQuestion * 10, examinationRepository.examinationId(id).getId());
-        examRepository.updateExam(exam.getTries() + 1, exam.getId());
+        examRepository.updateExam(exam.getTries() + 1,correctAnswerToExam, exam.getId());
     }
 
     public List<Examination> getList() {
