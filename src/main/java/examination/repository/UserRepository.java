@@ -19,6 +19,9 @@ public class UserRepository extends BaseRepository{
 
         return list.stream().findFirst().orElse(null);
     }
+    public User getUserById(Long id){
+        return getEntity(session -> session.get(User.class,id));
+    }
     public boolean exists(String userName){
         List list = getEntity(session -> {
             Query query = session.createQuery("from User where username=:username", User.class).setMaxResults(1);

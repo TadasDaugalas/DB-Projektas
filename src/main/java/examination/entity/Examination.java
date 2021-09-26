@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,9 +23,15 @@ public class Examination {
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "userid")
     private User user;
-    private String totalQuestion;
-    private String correctAnswers;
-    private String grade;
+    private int totalQuestion;
+    private int correctAnswers;
+    private double grade;
     private Timestamp startDate;
     private Timestamp endDate;
+
+    public Examination(Exam exam, User user) {
+        this.exam = exam;
+        this.user = user;
+        this.startDate = new java.sql.Timestamp(new java.util.Date().getTime());
+    }
 }

@@ -166,7 +166,11 @@ public class MenuService {
                     }
                 }
                 case START_EXAM -> {
-                    examinationService.exam(examId.get());
+                    Exam exam = examService.getExamById(examId.get());
+                    examinationService.createExamination(user,exam);
+                    long examinationId = examinationService.getList().size();
+                    examinationService.questioning(exam,examinationId);
+
                     menuState=MenuState.ANONYMOUS;
                 }
             }

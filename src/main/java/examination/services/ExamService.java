@@ -22,4 +22,7 @@ public class ExamService {
     public List<Exam> getList(){
        return examRepository.getExams();
     }
+    public Exam getExamById(Long id){
+        return examRepository.getExam(id);
+    }
 }
