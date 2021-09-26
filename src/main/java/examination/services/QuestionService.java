@@ -35,6 +35,12 @@ public class QuestionService {
         questionRepository.updateQuestion(questionId,text,answ1,answ2,answ3,correctAnsw);
         }
     }
+    public boolean checkQuestionListNotEmpty(Long id){
+        if(questionRepository.getQuestionsList(id).size()>0){
+            return true;
+        }
+        return false;
+    }
     public void printQuestionsList(Long id){
         List<Question> questionList=questionRepository.getQuestionsList(id);
         for (Question question:questionList){

@@ -131,6 +131,7 @@ public class MenuService {
                 }
                 case UPDATE_QUESTION -> {
                     questionService.printQuestionsList(examId.get());
+                    if(questionService.checkQuestionListNotEmpty(examId.get())){
                     System.out.println("Enter Question ID");
                     Long id = Long.parseLong(sc.nextLine());
                     System.out.println("Enter question text");
@@ -144,7 +145,12 @@ public class MenuService {
                     System.out.println("Enter correct answer");
                     int correctAnsw = Integer.parseInt(sc.nextLine());
                     questionService.updateQuestion(id, questionText, answer1, answer2, answer3, correctAnsw);
-                    menuState = MenuState.EXAM_MENU;
+                        menuState = MenuState.EXAM_MENU;
+                    }else {
+                        System.out.println("Question list is empty");
+                        menuState = MenuState.EXAM_MENU;
+                    }
+
                 }
                 case CHOSE_EXAM-> {
                     List<Exam> list = examService.getList();
